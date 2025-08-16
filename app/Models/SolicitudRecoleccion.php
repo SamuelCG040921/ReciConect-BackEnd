@@ -21,4 +21,24 @@ class SolicitudRecoleccion extends Model
         'Tip_Res_Id',
         'Sub_Res_Id'
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'Usu_Id', 'Usu_Id');
+    }
+
+    public function tipoResiduo()
+    {
+        return $this->belongsTo(TipoResiduo::class, 'Tip_Res_Id', 'Tip_Res_Id');
+    }
+
+    public function subtipoResiduo()
+    {
+        return $this->belongsTo(SubtipoResiduo::class, 'Sub_Res_Id', 'Sub_Res_Id');
+    }
+
+    public function recolecciones()
+    {
+        return $this->hasMany(Recoleccion::class, 'Sol_Rec_Id', 'Sol_Rec_Id');
+    }
 }
