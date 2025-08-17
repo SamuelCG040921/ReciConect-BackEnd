@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/SolicitudRecoleccion', [SolicitudRecoleccionController::class, 'index']);
 Route::get('/SolicitudRecoleccion/{id}', [SolicitudRecoleccionController::class, 'show']);
 Route::post('/SolicitudRecoleccion', [SolicitudRecoleccionController::class, 'store']);
+Route::put('/SolicitudRecoleccion/{id}', [SolicitudRecoleccionController::class, 'update']);
 
 //TIPOS RESIDUOS
 Route::get('/TiposResiduos', [TipoResiduoController::class, 'index']);
@@ -27,6 +28,9 @@ Route::get('/EmpresaRecolectoras', [EmpresaRecolectoraController::class, 'index'
 
 //RECOLECCIONES
 Route::post('/Recoleccion', [RecoleccionController::class, 'store']);
+Route::get('/Recoleccion/{id}', [RecoleccionController::class, 'show']);
+Route::get('/Recoleccion', [RecoleccionController::class, 'index']);
+Route::put('/Recoleccion/{id}', [RecoleccionController::class, 'update']);
 
 //Endpoints de usuario
 Route::post('/registro', [UsuarioController::class, 'registrar']);

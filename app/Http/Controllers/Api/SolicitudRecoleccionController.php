@@ -15,7 +15,8 @@ class SolicitudRecoleccionController extends Controller
     {
         $solicitudes = SolicitudRecoleccion::with([
             'usuario:Usu_Id,Usu_Nombre',
-            'subtipoResiduo:Sub_Res_Id,Sub_Res_Descripcion'
+            'subtipoResiduo:Sub_Res_Id,Sub_Res_Descripcion,Tip_Res_Id',
+            'subtipoResiduo.tipoResiduo:Tip_Res_Id,Tip_Res_Descripcion'
         ])->get(['Sol_Rec_Id', 'Sol_Rec_Tipo', 'Sol_Rec_Fecha', 'Sol_Rec_Estado', 'Usu_Id', 'Sub_Res_Id']);
 
         $resultado = $solicitudes->map(function ($sol) {
@@ -25,6 +26,7 @@ class SolicitudRecoleccionController extends Controller
                 'Sol_Rec_Fecha' => $sol->Sol_Rec_Fecha,
                 'Sol_Rec_Estado' => $sol->Sol_Rec_Estado,
                 'Usu_Nombre' => $sol->usuario->Usu_Nombre,
+                'Tip_Res_Descripcion' => $sol->subtipoResiduo->tipoResiduo->Tip_Res_Descripcion,
                 'Sub_Res_Descripcion' => $sol->subtipoResiduo->Sub_Res_Descripcion,
             ];
         });
@@ -107,10 +109,48 @@ class SolicitudRecoleccionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SolicitudRecoleccion $solicitudRecoleccion)
+    public function update(Request $request, $id)
     {
-        //
+        // Validación
+        $validator = Validator::make($request->all(), [
+            'Sol_Rec_Tipo'   => 'required|string|in:Programada,Por demanda',
+            'Sol_Rec_Fecha'  => 'required|date',
+            'Sol_Rec_Estado' => 'required|string|in:Pendiente,Completada,Cancelada',
+            'Usu_Id'         => 'required|integer|exists:Usuario,Usu_Id',
+            'Sub_Res_Id'     => 'required|integer|exists:subtipos_residuos,Sub_Res_Id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Buscar la solicitud por ID
+        $solicitud = SolicitudRecoleccion::find($id);
+        if (!$solicitud) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Solicitud de recolección no encontrada'
+            ], 404);
+        }
+
+        // Actualizar 
+        $solicitud->update($request->only([
+            'Sol_Rec_Tipo',
+            'Sol_Rec_Fecha',
+            'Sol_Rec_Estado',
+            'Usu_Id',
+            'Sub_Res_Id'
+        ]));
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Solicitud de recolección actualizada correctamente'
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
