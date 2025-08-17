@@ -1,14 +1,32 @@
 <?php
 
+use App\Http\Controllers\Api\EmpresaRecolectoraController;
 use App\Http\Controllers\Api\UsuarioController;
-use App\Http\Controllers\SolicitudRecoleccionController;
+use App\Http\Controllers\Api\SolicitudRecoleccionController;
+use App\Http\Controllers\Api\SubTipoResiduoController;
+use App\Http\Controllers\Api\TipoResiduoController;
+use App\Http\Controllers\Api\RecoleccionController;
+use App\Models\EmpresaRecolectora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-//index
+//SOLICITUDES RECOLECCION
 Route::get('/SolicitudRecoleccion', [SolicitudRecoleccionController::class, 'index']);
+Route::get('/SolicitudRecoleccion/{id}', [SolicitudRecoleccionController::class, 'show']);
 Route::post('/SolicitudRecoleccion', [SolicitudRecoleccionController::class, 'store']);
+
+//TIPOS RESIDUOS
+Route::get('/TiposResiduos', [TipoResiduoController::class, 'index']);
+
+//SUBTIPOS RESIDUOS
+Route::get('/SubTipoResiduos/{id}', [SubTipoResiduoController::class, 'index']);
+
+//EMPRESAS RECOLECTORAS
+Route::get('/EmpresaRecolectoras', [EmpresaRecolectoraController::class, 'index']);
+
+//RECOLECCIONES
+Route::post('/Recoleccion', [RecoleccionController::class, 'store']);
 
 //Endpoints de usuario
 Route::post('/registro', [UsuarioController::class, 'registrar']);
