@@ -33,8 +33,10 @@ class RecoleccionController extends Controller
             ], 422);
         }
 
-        $Recoleccion = Recoleccion::create($request->all());
-        return response()->json($Recoleccion, 201);
+        return response()->json([
+            'status'  => true,
+            'message' => 'Recoleccion creada correctamente'
+        ]);
     }
 
 }

@@ -18,7 +18,6 @@ class SolicitudRecoleccion extends Model
         'Sol_Rec_Fecha',
         'Sol_Rec_Estado', 
         'Usu_Id',
-        'Tip_Res_Id',
         'Sub_Res_Id'
     ];
 
