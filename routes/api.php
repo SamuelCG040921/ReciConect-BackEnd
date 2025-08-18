@@ -31,6 +31,7 @@ Route::post('/Recoleccion', [RecoleccionController::class, 'store']);
 Route::get('/Recoleccion/{id}', [RecoleccionController::class, 'show']);
 Route::get('/Recoleccion', [RecoleccionController::class, 'index']);
 Route::put('/Recoleccion/{id}', [RecoleccionController::class, 'update']);
+Route::get('/empresas/{empId}/recolecciones/hoy', [RecoleccionController::class, 'recoleccionesDelDia']);
 
 //Endpoints de usuario
 Route::post('/registro', [UsuarioController::class, 'registrar']);

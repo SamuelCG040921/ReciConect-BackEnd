@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Recoleccion;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -127,6 +128,28 @@ class RecoleccionController extends Controller
         return response()->json([
             'status'  => true,
             'message' => 'Recolección actualizada correctamente'
+        ]);
+    }
+
+    public function recoleccionesDelDia($empId)
+    {
+        $hoy = Carbon::today()->toDateString();
+
+        $recolecciones = Recoleccion::with([
+                'solicitud.usuario',
+                'solicitud.subtipoResiduo',
+                'empresa'
+            ])
+            ->where('Emp_Id', $empId)
+            ->whereDate('Rec_Fecha', $hoy)
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'fecha'  => $hoy,
+            'empresa_id' => $empId,
+            'total'  => $recolecciones->count(),
+            'recolecciones' => $recolecciones
         ]);
     }
 }
