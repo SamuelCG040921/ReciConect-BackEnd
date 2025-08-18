@@ -94,4 +94,15 @@ class UsuarioController extends Controller
             'message' => 'Sesión cerrada correctamente'
         ]);
     }
+
+    public function index()
+    {
+        // Obtenemos todos los usuarios con sus roles y localidades (si tienes las relaciones definidas en el modelo)
+        $usuarios = Usuario::with(['rol', 'localidad'])->get();
+
+        return response()->json([
+            'status' => true,
+            'usuarios' => $usuarios
+        ]);
+    }
 }
